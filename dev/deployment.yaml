@@ -1,20 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: remix-todo-deployment
+  labels: 
+    app: remix-todo
 spec:
   selector:
     matchLabels:
-      app: myapp
+      app: remix-todo
   replicas: 2
   template:
     metadata:
       labels:
-        app: myapp
+        app: remix-todo
     spec:
       containers:
-      - name: myapp
+      - name: remix-todo-container
         image: asgupta2141/test-pri-repo:1.0
+        command:
+        - argocd-application-controller
+        - --status-processors
+        - "20"
+        - --operation-processors
+        - "10"
+        - --repo-server-timeout-seconds
+        - "180"
         ports:
-        - containerPort: 8080
+        - containerPort: 3000
 
